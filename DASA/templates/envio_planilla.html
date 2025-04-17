@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Planilla de Obra - DASA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container my-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title mb-4 text-primary">Informe de Obra - DASA</h3>
+
+        <p class="mb-3"><strong>{{ empresa }}</strong>,</p>
+
+        <p>Le hacemos llegar la planilla correspondiente a la siguiente obra:</p>
+
+        <ul class="list-group mb-4">
+          <li class="list-group-item"><strong>Dirección:</strong> {{ direccion_obra }}</li>
+          <li class="list-group-item"><strong>Sector:</strong> {{ sector }}</li>
+          <li class="list-group-item"><strong>Fecha:</strong> {{ fecha }}</li>
+        </ul>
+
+        <p>En el archivo adjunto encontrará los detalles de la inspección realizada, incluyendo el estado de las regulaciones y observaciones correspondientes.</p>
+
+        <p>Puede descargar y revisar la planilla en formato PDF adjunto a este correo.</p>
+
+        <p class="mt-4">Ante cualquier consulta, no dude en comunicarse con nosotros.</p>
+
+        <p class="fw-bold">Saludos cordiales,</p>
+        <p>Equipo de DASA</p>
+
+        <hr>
+        <small class="text-muted">
+          Este mensaje fue generado automáticamente. Por favor, no responder.
+        </small>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

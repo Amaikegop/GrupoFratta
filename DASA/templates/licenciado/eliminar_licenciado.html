@@ -1,0 +1,13 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" %}
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'detalle_licenciado' licenciado.CUIL %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endif %}
+
+{% endblock %}

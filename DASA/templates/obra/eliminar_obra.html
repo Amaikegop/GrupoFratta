@@ -1,0 +1,15 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" or request.user.groups.all.0.name == "Licenciados" %}
+
+    <h1>Eliminar obra</h1>
+    <p>¿Estás seguro de que querés eliminar la obra <strong>{{ obra.direccion}}</strong> ?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'detalle_obra' obra.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'navbar.html' %}
+{% block content %}
+{% if request.user.groups.all.0.name == "Licenciados" %}
+
+    <div class="row m-3 mt-5 py-5 px-3 border">
+        <div class="col-8">
+            <h1>Planillas</h1>
+        </div>
+       
+        <div class="col-4 text-start mt-3">
+            <form method="GET" action="">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Buscar...">
+                    <button type="submit" class="btn bi bi-search"></button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="table-responsive mt-5">
+            <table class="table table-striped table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Obra</th>
+                  <th>Última planilla</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for obra in obras %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ obra }}</td>
+                  <td>
+                    {% if obra.estado_incumplimiento %}
+                      <span class="text-danger">{{ obra.ult_visita.fecha|date:"d/m/Y" }}</span>
+                    {% else %}
+                      {{ obra.ult_visita.fecha|date:"d/m/Y" }}
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if obra.sin_visita %}
+                      <span>Sin visitas</span>
+                    {% else %}
+                      {% if obra.estado_incumplimiento %}
+                        <span class="text-danger">Crítico</span>
+                      {% else %}
+                        <span>Crítico</span>
+                      {% endif %}
+                    {% endif %}
+                  </td>
+                  <td class="d-flex">
+                    {% if obra.sin_visita %}
+                      <button type="button" class="btn btn-sm btn-outline-secondary bi bi-eye" disabled></button>
+                    {% elif obra.planilla_temporal %}
+                      <a href="{% url 'detalle_planilla' obra.ult_visita.id %}" class="btn btn-sm btn-outline-primary me-1 bi bi-eye"></a>
+                    {% else %}
+                      <a href="{{ obra.ult_visita.archivo.url }}" class="btn btn-sm btn-outline-primary me-1 bi bi-eye"></a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+{% endif %}
+{% endblock %}

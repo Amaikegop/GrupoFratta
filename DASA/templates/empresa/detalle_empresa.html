@@ -1,0 +1,26 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" or request.user.groups.all.0.name == "Licenciados" %}
+    <div class="row m-3 mt-5 pt-5 px-3 border">
+        <h1 class="fw-light col-12 col-md-10 mb-3 p-1 pb-lg-3">Empresa {{empresa.usuario.first_name}}:</h1> 
+        {% if request.user.groups.all.0.name == "Administrador DASA" %}
+        <div class="col-12 col-md-2 text-start mb-2 mb-lg-5 pt-1 pt-lg-4">
+            <a href="{% url 'editar_empresa' empresa.CUIT %}" class="btn btn-primary btn-sm">Editar</a> 
+        </div>
+        {% endif %}
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr><th>CUIT</th><td>{{ empresa.CUIT }}</td></tr>
+                <tr><th>Razón Social</th><td>{{ empresa.usuario.first_name }}</td></tr>
+                <tr><th>Email</th><td>{{ empresa.usuario.email }}</td></tr>
+                <tr><th>Celular</th><td>{{ empresa.cel }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row m-3 p-2 border"> 
+        <h2 class="fw-light p-3">Obras</h2>
+         {% include 'obra/informacion_obras.html' with obras_agro=obras_agro obras_construccion=obras_construccion obras_industria_comercio=obras_industria_comercio %}
+    </div>
+{% endif %}
+{% endblock %}

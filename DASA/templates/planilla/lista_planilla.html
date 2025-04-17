@@ -1,0 +1,30 @@
+<h3 class="mt-5">Visitas pendientes de revisión:</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for planilla in planillas %}
+        <tr>
+        <td>{{planilla.fecha|date:"d/m/Y"}}</td>
+        <td class="text-danger">{% if planilla.estado_incumplimiento %}
+            Crítico
+        {% endif %}
+        </td>
+        <td class="d-flex">
+            <!-- <a href="{% url 'añadir_planilla' obra.id %}" type="submit" class="btn btn-sm btn-outline-primary me-1 bi bi-file-earmark-plus"></a> -->
+            <a href="{% url 'detalle_planilla' planilla.id %}" class="btn btn-sm btn-outline-primary me-1 bi bi-eye"></a>
+            {% if request.user.groups.all.0.name != "Empresas" %}
+            <a href="{% url 'editar_planilla' obra.ult_visita.id %}" class="btn btn-sm btn-outline-secondary me-1 bi bi-pencil-square"></a>
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

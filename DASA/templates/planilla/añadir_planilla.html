@@ -1,0 +1,36 @@
+{% extends 'navbar.html' %}
+{% load bootstrap %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Licenciados" %}
+
+    <div class="row m-3 mt-5 py-5 px-3 border">
+        <h1 class="fw-light col-12 mb-3">Planilla de observaciones</h1> 
+        <div class="d-flex  justify-content-center ">
+           
+            <div class="col-12 col-md-6 border">
+                <form method="post" class="p-3">
+                    {% csrf_token %}
+                    {{ form|bootstrap }} 
+                    <div class="text-center mt-4 d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-primary px-4">Siguiente</button>
+                    
+                        <button name="cancelar" value="true" class="btn btn-outline-danger px-4" type="submit" onclick="return confirm('¿Seguro que querés cancelar y borrar la planilla?')">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        {% if messages %}
+            <div class="alert alert-success mt-3">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+{% endif %}
+{% endblock %}

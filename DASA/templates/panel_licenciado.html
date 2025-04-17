@@ -1,0 +1,55 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+    <h1 class="mt-5 pt-5">Resumen semanal</h1>
+  
+    <!-- Visitas a realizar -->
+    <div class="card shadow-sm my-5">
+      <div class="card-body">
+        <h2 class="fw-light mb-4 border-bottom pb-2">Visitas a realizar</h2>
+        {% for obra in obras %}
+          {% if obra.generar_nueva_planilla %}
+            <div class="row align-items-center py-2 border-bottom">
+              <div class="col-md-8">
+                <p class="mb-0">{{ obra }}</p>
+              </div>
+              <div class="col-md-4 text-end">
+                <a href="{% url 'añadir_planilla' obra.id %}" class="btn btn-outline-success btn-sm">
+                  <i class="bi bi-file-earmark-plus me-1"></i> Generar planilla
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="text-muted">No hay visitas para realizar.</p>
+    
+        {% endfor %}
+      </div>
+    </div>
+  
+    <!-- Visitas pendientes de revisión -->
+    <div class="card shadow-sm my-5">
+      <div class="card-body">
+        <h2 class="fw-light mb-4 border-bottom pb-2">Visitas pendientes de revisión</h2>
+        {% for obra in obras %}
+          {% if obra.estado_incumplimiento %}
+            <div class="row align-items-center py-2 border-bottom">
+              <div class="col-md-8">
+                <p class="mb-0">{{ obra }}</p>
+              </div>
+              <div class="col-md-4 text-end">
+                {% if obra.ult_visita %}
+                  <a href="{% url 'editar_planilla' obra.ult_visita.id %}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-exclamation-triangle me-1"></i>Verificar
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p class="text-muted">No hay visitas pendientes de revisión.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+{% endblock %}

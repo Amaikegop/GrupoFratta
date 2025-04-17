@@ -1,0 +1,42 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" %}
+
+    <div class="row m-3 mt-5 py-5 px-3 border">
+        <h1 class="fw-light col-12 col-md-10 mb-3 p-1 pb-lg-3">Licenciado/a {{ licenciado.usuario.first_name }} {{ licenciado.usuario.last_name }}:</h1> 
+        <div class="col-md-2 text-start mb-2 mb-lg-5 pt-1 pt-lg-4">
+            <a href="{% url 'editar_licenciado' licenciado.CUIL %}" class="btn btn-primary btn-sm">Editar</a> 
+        </div>
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr><th>Nombre y apellido</th><td>{{ licenciado.usuario.first_name }} {{ licenciado.usuario.last_name }}</td></tr>
+                <tr><th>CUIL</th><td>{{ licenciado.CUIL }}</td></tr>
+                <tr><th>Email</th><td>{{ licenciado.usuario.email }}</td></tr>
+            </tbody>
+        </table>
+        <h3 class="mt-5">Obras activas:</h3>
+
+        <!-- Encabezado visible solo en pantallas md o mayores -->
+        <div class="row fw-bold d-none d-md-flex border-bottom pb-2">
+            <div class="col-md-6">
+                <h6 class="mb-0">Nombre</h6>
+            </div>
+        </div>
+
+        {% for obra in obras %}
+        <div class="row py-2 mt-2 border-bottom">
+            <!-- Nombre -->
+            <div class="col-12 col-md-6">
+                <span class="fw-bold d-md-none">Nombre: </span>
+                <a href="{% url 'detalle_obra' obra.id %}" class="text-decoration-none">
+                    {{ obra }}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>  
+{% endif %}
+
+{% endblock %}

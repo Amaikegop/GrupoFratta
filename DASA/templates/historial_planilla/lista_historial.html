@@ -1,0 +1,21 @@
+<h3 class="mt-5">Historial visitas semanales:</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Fecha</th>
+          <th>Ver</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for planilla in historial %}
+        <tr>
+        <td>{{planilla.fecha|date:"d/m/Y"}}</td>
+        <td>
+            <a href="{{ planilla.archivo.url }}" target="_blank" class="bi bi-eye"></a>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

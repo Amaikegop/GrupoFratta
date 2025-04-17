@@ -1,0 +1,14 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" %}
+    <h1>Eliminar empresa</h1>
+    <p>¿Estás seguro de que querés eliminar la empresa <strong>{{ empresa.razon_social }}</strong> (CUIT: {{ empresa.CUIT }})?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'detalle_empresa' empresa.CUIT %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endif %}
+{% endblock %}

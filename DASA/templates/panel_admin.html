@@ -1,0 +1,77 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+  <!-- Título general -->
+  <div class="row mb-4 mt-5 pt-5">
+    <div class="col">
+      <h2 class="fw-light">Resumen general</h2>
+    </div>
+  </div>
+
+  <!-- Empresas -->
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="fw-light">Empresas registradas</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Empresa</th>
+              <th>Obras totales</th>
+              <th>Obras con doc. faltantes</th>
+              <th>Obras con doc. vencidos</th>
+              <th>Obras con visitas críticas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for empresa in empresas %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ empresa.usuario.first_name }}</td>
+                <td>{{ empresa.obras.count }}</td>
+                <td>
+                    {{ empresa.obras_con_documentos_faltantes|length }}
+                </td>
+                <td>
+                    {{ empresa.obras_con_documentos_a_vencer|length }}
+                </td>
+                <td>
+                  {{ empresa.obras_con_visitas_riesgosas|length }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Licenciados -->
+  <div class="row mt-5">
+    <div class="col">
+      <h4 class="fw-light">Licenciados de obra</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Cantidad de obras asignadas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for licenciado in licenciados %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ licenciado.usuario.first_name }}</td>
+                <td>{{ licenciado.obras.count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

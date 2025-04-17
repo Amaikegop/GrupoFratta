@@ -1,0 +1,57 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+  <div class="row m-3 mt-5 py-5 px-3 border">
+      <h1 class="fw-light col-12 mb-3">Detalle planilla:</h1> 
+      <h3 class="fw-light col-12 col-md-6 mb-3">{{planilla.obra}} </h3>
+      <h6 class="fw-light col-12 col-md-6 text-end text-md-start mt-3">{{planilla}}</h6>
+
+      <div class="d-flex flex-wrap">
+        {% for aspecto in aspectos%}
+          <div class="col-12 row border pt-2"> 
+            <div class="col-9">
+              <p>{{aspecto.get_tipo_display}}</p>
+            </div>
+            <div class="col-1 ">
+              <p>{{aspecto.cs}}</p>
+            </div>
+            <div class="col-1">
+              {% if aspecto.ci > 0 %}
+                <p class="text-danger">{{aspecto.ci}}</p>
+              {% else %}
+                <p>{{aspecto.ci}}</p>
+                {% endif %}
+            </div>
+            <div class="col-1">
+              {% if aspecto.na %}
+                <i class="bi bi-x-circle"></i>
+              {% else %}
+                <i class="bi bi-check-circle"></i>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="row mt-2">
+        <div class="col-12 pb-2">
+          <p class="p-2 bg-secondary text-white">Comentarios</p>
+          {{planilla.comentarios}}
+        </div>
+        <div class="col-12 pb-2">
+          <p class="p-2 bg-secondary text-white">Acciones inmediatas</p>
+          {{planilla.acciones}}
+        </div>
+        <div class="col-6">
+          <p class="p-2 bg-secondary text-white">Evaluacion de las acciones tomadas</p>
+          {{planilla.verificacion}}
+        </div>
+        <div class="col-6">
+          <p class="p-2 bg-secondary text-white">Fecha efectiva</p>
+          {{planilla.fecha_efectiva}}
+        </div>
+      </div>
+  </div>
+  
+  
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Empresas" %}
+<div class="row m-3 mt-5 py-5 px-3 border">
+    <h1 class="fw-light col-12">{{obra}}:</h1>  
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <tr><th>Dirección</th><td>{{ obra.direccion }}</td></tr>
+            <tr><th>Sector</th><td>{{ obra.get_sector_display }}</td></tr>
+            <tr><th>ART</th><td>{{ obra.art}}</td></tr>
+            <tr><th>Firma</th><td>{{ obra.firma }}</td></tr>
+        </tbody>
+    </table>
+    <h3 class="mt-5">Documentos:</h3>
+
+    <!-- Encabezado visible solo en pantallas md o mayores -->
+    <div class="row fw-bold d-none d-md-flex border-bottom pb-2">
+        <div class="col-md-5">
+            <h6 class="mb-0">Tipo de documento</h6>
+        </div>
+        <div class="col-md-5">
+            <h6 class="mb-0">Fecha de vencimiento</h6>
+        </div>
+        <div class="col-md-2">
+            <h6 class="mb-0">Acciones</h6>
+        </div>
+    </div>
+
+    {% for doc in documentos %}
+    <div class="row py-2 mt-2 border-bottom">
+        <!-- Tipo de documento -->
+        <div class="col-12 col-md-5">
+            <span class="fw-bold d-md-none">Tipo de documento: </span>
+            {{ doc.get_tipo_display }}
+        </div>
+
+        <!-- Fecha de vencimiento -->
+        <div class="col-12 col-md-5">
+            <span class="fw-bold d-md-none">Fecha de vencimiento: </span>
+            {% if doc.doc %}
+                <span class="text-{{ doc.estado_vencimiento }}">
+                    {{ doc.fecha_vencimiento|date:"d/m/Y" }}
+                </span>
+            {% else %}
+                <span>No disponible</span>
+            {% endif %}
+        </div>
+
+        <!-- Acciones -->
+        <div class="col-12 col-md-2 text-md-center">
+            <span class="fw-bold d-md-none">Acciones: </span>
+            {% if doc.doc %}
+                <a href="{{ doc.doc.url }}" target="_blank" class="btn btn-sm btn-outline-primary me-2 bi bi-eye" title="Ver"></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    {% include 'planilla/lista_planilla.html' with planillas=planillas %}  
+    {% include 'historial_planilla/lista_historial.html' with historial=historial %}  
+    {% include 'nomina/lista_nomina.html' with obra=obra nomina=nomina %}  
+</div>  
+{% else %}
+<div class="row m-3 mt-5 py-5 px-3 border">
+    <h1 class="fw-light col-12">{{obra}}:</h1> 
+    <div class="col-12 text-start mb-3">
+        <a href="{% url 'editar_obra' obra.id %}" class="btn btn-primary btn-sm">Editar obra</a>
+    </div> 
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <tr><th>Empresa</th><td>{{ obra.empresa }}</td></tr>
+            <tr><th>Dirección</th><td>{{ obra.direccion }}</td></tr>
+            <tr><th>Sector</th><td>{{ obra.get_sector_display }}</td></tr>
+            <tr><th>Email Empresa</th><td>{{ obra.empresa.usuario.email}}</td></tr>
+            <tr><th>Cel Empresa</th><td>{{ obra.empresa.cel }}</td></tr>
+            <tr><th>ART</th><td>{{ obra.art}}</td></tr>
+            <tr><th>Firma</th><td>{{ obra.firma }}</td></tr>
+        </tbody>
+    </table>
+    <h3 class="mt-5">Documentos:</h3>
+
+    <!-- Encabezado visible solo en pantallas md o mayores -->
+    <div class="row fw-bold d-none d-md-flex border-bottom pb-2">
+        <div class="col-md-5">
+            <h6 class="mb-0">Tipo de documento</h6>
+        </div>
+        <div class="col-md-5">
+            <h6 class="mb-0">Fecha de vencimiento</h6>
+        </div>
+        <div class="col-md-2">
+            <h6 class="mb-0">Acciones</h6>
+        </div>
+    </div>
+
+    {% for doc in documentos %}
+    <div class="row py-2 mt-2 border-bottom">
+        <!-- Tipo de documento -->
+        <div class="col-12 col-md-5">
+            <span class="fw-bold d-md-none">Tipo de documento: </span>
+            {{ doc.get_tipo_display }}
+        </div>
+
+        <!-- Fecha de vencimiento -->
+        <div class="col-12 col-md-5">
+            <span class="fw-bold d-md-none">Fecha de vencimiento: </span>
+            {% if doc.doc %}
+                <span class="text-{{ doc.estado_vencimiento }}">
+                    {{ doc.fecha_vencimiento|date:"d/m/Y" }}
+                </span>
+            {% else %}
+                <span>No disponible</span>
+            {% endif %}
+        </div>
+
+        <!-- Acciones -->
+        <div class="col-12 col-md-2 text-md-center">
+            <span class="fw-bold d-md-none">Acciones: </span>
+            {% if doc.doc %}
+                <a href="{{ doc.doc.url }}" target="_blank" class="btn btn-sm btn-outline-primary me-2 bi bi-eye" title="Ver"></a>
+            {% endif %}
+            <a href="{% url 'editar_documento' doc.id %}" class="btn btn-sm btn-outline-secondary bi bi-pencil-square" title="Editar"></a>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    {% include 'planilla/lista_planilla.html' with planillas=planillas %}  
+    {% include 'historial_planilla/lista_historial.html' with historial=historial %}  
+    {% include 'nomina/lista_nomina.html' with obra=obra nomina=nomina %}  
+</div>
+{% endif %}
+{% endblock %}

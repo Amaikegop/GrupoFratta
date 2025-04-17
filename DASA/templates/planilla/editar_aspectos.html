@@ -1,0 +1,70 @@
+{% extends "navbar.html" %}
+{% load bootstrap %}
+{% block content %}
+{% if request.user.groups.all.0.name == "Licenciados" %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 border p-4 rounded shadow-sm">
+            <h1 class="fw-light text-center my-5 mb-4">Planilla de Observaciones</h1>
+
+            <form method="post" class="p-3" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ formset.management_form }}
+
+                <div class="row">
+                    {% for form in formset %}
+                        <div class="col-12 col-md-6 mb-4">
+                            <!-- Título con el tipo de aspecto de seguridad -->
+                            <h4 class="fw-bold text-primary">{{ form.instance.get_tipo_display }}</h4>
+
+                            <div class="form-group mb-3 row">
+                                {% for field in form.visible_fields %}
+                                    {% if field.name != 'tipo' %}
+                                        {% if field.name == 'imagen'%}
+                                            <div class="mb-3 col-12">
+                                                <label for="{{ field.id_for_label }}" class="fw-bold">{{ field.label }}</label>
+                                                {{ field }}
+                                            </div>
+                                        {% else %}
+                                            <div class="mb-3 ">
+                                                <label for="{{ field.id_for_label }}" class="fw-bold">{{ field.label }}</label>
+                                                {{ field }}
+                                        
+                                            </div>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <div class="text-danger">
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        {{ field.as_hidden }} 
+                                    {% endif %}
+                                {% endfor %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-center mt-4 d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn btn-primary px-4">Siguiente</button>
+                
+                    <button name="cancelar" value="true" class="btn btn-outline-danger px-4" type="submit" onclick="return confirm('¿Seguro que querés cancelar y borrar la planilla?')">
+                        Cancelar
+                    </button>
+                </div>
+                
+            </form>
+            {% if messages %}
+                <div class="alert alert-success mt-3">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

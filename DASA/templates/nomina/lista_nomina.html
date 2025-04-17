@@ -1,0 +1,87 @@
+{% if request.user.groups.all.0.name == "Empresas" %}
+<h3 class="mt-5">Nomina:</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>CUIL</th>
+            <th>Fecha incorporación</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for persona in nomina %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ persona.nombre }}</td>
+            <td>{{ persona.apellido }}</td>
+            <td>{{ persona.CUIL }}</td>
+            <td>{{ persona.fecha_incorporacion }}</td>
+        </tr> 
+        {% endfor %}
+    </tbody>
+    
+    </table>
+</div>
+{% else %}
+<h3 class="mt-5">Nomina:</h3>
+<div class="col-12 text-start mb-2">
+    <a href="{% url 'añadir_nomina' obra.id %}" class="btn btn-primary btn-sm">Agregar nómina</a>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>CUIL</th>
+            <th>Fecha incorporación</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for persona in nomina %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ persona.nombre }}</td>
+            <td>{{ persona.apellido }}</td>
+            <td>{{ persona.CUIL }}</td>
+            <td>{{ persona.fecha_incorporacion }}</td>
+            <td>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'editar_nomina' persona.CUIL %}" class="btn btn-sm btn-outline-secondary me-1 bi bi-pencil-square"></a>
+        
+                    <!-- Modal para eliminar nomina -->
+                    <div class="modal fade" id="modalEliminar{{ persona.CUIL }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ nomina.CUIL }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalEliminarLabel{{ persona.CUIL }}">Eliminar nómina</h5>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que querés eliminar la persona <strong>{{ persona.nombre}} {{ persona.apellido}}</strong> (CUIL: {{ persona.CUIL }})? Esta acción no se puede deshacer.
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="post" action="{% url 'eliminar_nomina' persona.CUIL %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <a type="button" class="btn btn-sm btn-outline-danger me-1 bi bi-trash" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ persona.CUIL }}"></a>
+                </div>
+            </td>
+        </tr> 
+        {% endfor %}
+    </tbody>
+    
+    </table>
+</div>
+{% endif %}

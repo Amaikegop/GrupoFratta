@@ -1,0 +1,80 @@
+{% extends 'navbar.html' %}
+{% load bootstrap %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" %}
+    <div class="row m-3 mt-5 py-5 px-3 border">
+        <div class="col-12 col-md-8">
+            <h1>Licenciados</h1>
+        </div>
+        <div class="col-12 col-md-4 text-start mt-3">
+            <form method="GET" action="">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Buscar...">
+                    <button type="submit" class="btn bi bi-search"></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 text-start mb-2 mt-3">
+            <a href="{% url 'añadir_licenciado' %}" class="btn btn-primary btn-sm">Agregar licenciado</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre y apellido</th>
+                        <th>CUIL</th>
+                        <th>Email</th>
+                        <th class="text-center">Obras activas</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for licenciado in licenciados %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ licenciado.usuario.first_name }} {{ licenciado.usuario.last_name }}</td>
+                        <td>{{ licenciado.CUIL }}</td>
+                        <td>{{ licenciado.usuario.email }}</td>
+                        <td class="text-center">{{ licenciado.obras.count }}</td>
+                        <td>   
+                            <div class="d-flex justify-content-center">
+
+                                <a href="{% url 'detalle_licenciado' licenciado.CUIL %}" class="btn btn-sm btn-outline-primary me-1 bi bi-eye"></a>
+
+                                <a href="{% url 'editar_licenciado' licenciado.CUIL %}" class="btn btn-sm btn-outline-secondary me-1 bi bi-pencil-square"></a>
+
+                                <!-- Modal para eliminar licenciado -->
+                                <div class="modal fade" id="modalEliminar{{ licenciado.CUIL }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ licenciado.CUIL }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalEliminarLabel{{ licenciado.CUIL }}">Eliminar licenciado</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro de que querés eliminar al licenciado <strong>{{ licenciado.usuario.first_name }} {{ licenciado.usuario.last_name }}</strong>? Esta acción no se puede deshacer.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form method="post" action="{% url 'eliminar_licenciado' licenciado.CUIL %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a type="button" class="btn btn-sm btn-outline-danger me-1 bi bi-trash" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ licenciado.CUIL }}"></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endif %}
+{% endblock %}

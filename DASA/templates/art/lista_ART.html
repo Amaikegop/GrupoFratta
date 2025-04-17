@@ -1,0 +1,76 @@
+{% extends 'navbar.html' %}
+{% load bootstrap %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == "Administrador DASA" %}
+    <div class="row m-3 mt-5 py-5 px-3 border">
+        <div class="col-12 col-md-8">
+            <h1>ART</h1>
+        </div>
+       
+        <div class="col-12 col-md-4 text-start mt-3">
+            <form method="GET" action="">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Buscar...">
+                    <button type="submit" class="btn bi bi-search"></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 text-start mb-2 mt-3">
+            <a href="{% url 'añadir_ART' %}" class="btn btn-primary btn-sm">Agregar ART</a> 
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Empresas asociadas</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for ART in ARTs %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ ART.nombre }}</td>
+                  <td>{{ ART.obras.count }}</td>
+                  <td>
+                    <div class="d-flex justify-content-center">
+                      <a href="{% url 'editar_ART' ART.id %}" class="btn btn-sm btn-outline-secondary me-1 bi bi-pencil-square" title="Editar"></a>
+            
+                      <!-- Modal para eliminar ART -->
+                      <div class="modal fade" id="modalEliminar{{ ART.id }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ ART.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalEliminarLabel{{ ART.id }}">Eliminar ART</h5>
+                            </div>
+                            <div class="modal-body">
+                              ¿Estás seguro de que querés eliminar la ART <strong>{{ ART.nombre }}</strong>? Esta acción no se puede deshacer.
+                            </div>
+                            <div class="modal-footer">
+                              <form method="post" action="{% url 'eliminar_ART' ART.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            
+                      <a type="button" class="btn btn-sm btn-outline-danger me-1 bi bi-trash" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ ART.id }}" title="Eliminar"></a>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+        
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 mb-5 rounded">
+
+        <div class="bg-primary p-3 rounded-top">
+            <h3 class="text-white fw-light">Login</h3>
+        </div>
+    
+        <form method="post" action=" " class="bg-light rounded-bottom"> {% csrf_token %}
+            <div class="p-3">
+                    {{ form|bootstrap }} 
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 rounded-top-0">Ingresar</button>
+        </form>
+        <p class="text-center mt-3">
+            <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+        </p>
+        
+    </div>
+</div>
+
+{% endblock %}
