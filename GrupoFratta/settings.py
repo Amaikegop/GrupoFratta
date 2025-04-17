@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,10 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'GrupoFratta.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config('DB_NAME'),
-        "USER": config('DB_USER'),
-        "PASSWORD": config('DB_PASSWORD'),
-        "HOST": config('DB_HOST'),
-        "PORT": config('DB_PORT'),
+        "NAME": os.getenv('DB_NAME'),
+        "USER": os.getenv('DB_USER'),
+        "PASSWORD": os.getenv('DB_PASSWORD'),
+        "HOST": os.getenv('DB_HOST'),
+        "PORT": os.getenv('DB_PORT'),
     }
 }
 
@@ -118,8 +118,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
